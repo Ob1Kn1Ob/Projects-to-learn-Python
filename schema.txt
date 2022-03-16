@@ -1,0 +1,58 @@
+**Schema (MySQL v5.7)**
+
+    create table people
+    (
+    SSN int unique not null,
+    name varchar(25) not null,
+    dob date not null, -- date of birth
+    motherSSN int references people(ssn),
+    fatherSSN int references people(ssn)
+    );
+    create view myView as
+    select
+    ssn,
+    name,
+    dob,
+    (extract (year from dob)) as yob,
+    (extract (month from dob)) as mob,
+    (extract (day from dob)) as ddob,
+    motherSSN,
+    fatherSSN
+    from people;
+    
+    insert into people values (11111, 'Ada', '1948-03-01', NULL, NULL);
+    insert into people values (22222, 'Bob', '1948-11-11', NULL, NULL);
+    insert into people values (33333, 'Eve', '1950-07-21', NULL, NULL);
+    insert into people values (44444, 'Brian', '1952-04-01', NULL, NULL);
+    insert into people values (55555, 'Kate', '1982-05-13', 33333, 44444);
+    insert into people values (66666, 'Leo', '1981-10-20', 33333, 44444);
+    insert into people values (77777, 'Carl', '1984-03-14', 11111, 22222);
+    insert into people values (88888, 'Deb', '1979-11-18', 11111, 22222);
+    insert into people values (99997, 'Liv', '2007-02-28', 55555, 77777);
+    insert into people values (99998, 'Ann', '2011-07-09', 88888, 66666);
+    insert into people values (99999, 'Zoe', '2012-01-19', 88888, NULL);
+    commit;
+
+---
+
+**Query #1**
+
+    SELECT * FROM people;
+
+| SSN   | name  | dob        | motherSSN | fatherSSN |
+| ----- | ----- | ---------- | --------- | --------- |
+| 11111 | Ada   | 1948-03-01 |           |           |
+| 22222 | Bob   | 1948-11-11 |           |           |
+| 33333 | Eve   | 1950-07-21 |           |           |
+| 44444 | Brian | 1952-04-01 |           |           |
+| 55555 | Kate  | 1982-05-13 | 33333     | 44444     |
+| 66666 | Leo   | 1981-10-20 | 33333     | 44444     |
+| 77777 | Carl  | 1984-03-14 | 11111     | 22222     |
+| 88888 | Deb   | 1979-11-18 | 11111     | 22222     |
+| 99997 | Liv   | 2007-02-28 | 55555     | 77777     |
+| 99998 | Ann   | 2011-07-09 | 88888     | 66666     |
+| 99999 | Zoe   | 2012-01-19 | 88888     |           |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)

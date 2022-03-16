@@ -1,2 +1,2 @@
-# projects-to-learn-python
-projects to learn more about python 
+# Code samples
+all my code samples
